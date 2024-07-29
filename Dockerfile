@@ -1,4 +1,3 @@
-
 FROM alpine:latest as download
 
 RUN apk add curl
@@ -19,9 +18,12 @@ COPY --from=download /pocketbase /usr/local/bin/pocketbase
 COPY start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
-# Copy hooks to a temporary location
+# Copy hooks and migrations to a temporary location
 COPY ./pb_hooks /tmp/pb_hooks
 COPY ./pb_migrations /tmp/pb_migrations
+
+# Define a single volume for PocketBase data
+VOLUME /root/pocketbase
 
 EXPOSE 8090
 
